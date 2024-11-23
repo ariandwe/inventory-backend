@@ -1,6 +1,8 @@
 package com.company.inventory.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +45,39 @@ public class CategoryServiceImpl  implements ICategoryService{
     	return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
     	
 }
+
+    @Transactional(readOnly= true)
+	@Override
+	public ResponseEntity<CategoryResponseRest> searchById(Long id) {
+      CategoryResponseRest response = new CategoryResponseRest();
+      List<Category> list = new ArrayList<>();
+    	
+    	try{
+    	 
+    		Optional <Category> category = categoryDao.findById(id);
+    		
+    		if(category.isPresent()) {
+    			 list.add(category.get());
+    			 response.getCateogryResponse().setCategory(list);
+    			 response.setMetadata("OK", "-1", "Categoria  encontrada");
+    		}else {
+    			response.setMetadata("Fail", "-1", "Categoria no encontrada");
+
+            	return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
+    		}
+    		
+    				
+    	} catch (Exception e) {
+
+    		response.setMetadata("Fail", "-1", "Error al consultar por id");
+    		e.getStackTrace();
+
+        	return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    		
+    	}
+    	
+    	return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
     
     
     
