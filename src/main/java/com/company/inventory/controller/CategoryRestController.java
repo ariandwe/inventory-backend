@@ -16,7 +16,7 @@ import com.company.inventory.model.Category;
 import com.company.inventory.response.CategoryResponseRest;
 import com.company.inventory.services.ICategoryService;
 
-@CrossOrigin(origins = {"htpp://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/v1")
 public class CategoryRestController {
